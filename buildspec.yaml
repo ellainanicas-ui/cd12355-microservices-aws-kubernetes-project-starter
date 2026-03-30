@@ -4,19 +4,22 @@ phases:
   pre_build:
     commands:
       - echo Logging in to Amazon ECR...
-      - <ecr login command>
-      - <set image uri variable>
+      - AWS_ACCOUNT_ID=267455002586
+      - AWS_DEFAULT_REGION=us-east-1
+      - IMAGE_REPO_NAME=coworking-analytics
+      - IMAGE_TAG=latest
+      - REPOSITORY_URI=$AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$IMAGE_REPO_NAME
+      - aws ecr get-login-password --region $AWS_DEFAULT_REGION | docker login --username AWS --password-stdin $REPOSITORY_URI
   build:
     commands:
       - echo Build started on `date`
-      - <docker build command>
-      - <docker tag command if needed>
+      - docker build -t $IMAGE_REPO_NAME .
+      - docker tag $IMAGE_REPO_NAME:$IMAGE_TAG $REPOSITORY_URI:$IMAGE_TAG
   post_build:
     commands:
       - echo Pushing the Docker image...
-      - <docker push command>
-      - <write image artifact file if the lesson asks for one>
+      - docker push $REPOSITORY_URI:$IMAGE_TAG
 
 artifacts:
   files:
-    - <artifact filename if required>
+    - '**/*'
