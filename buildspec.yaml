@@ -4,7 +4,7 @@ phases:
   pre_build:
     commands:
       - echo Logging in to Amazon ECR...
-      - AWS_ACCOUNT_ID=267455002586
+      - AWS_ACCOUNT_ID=119419680255
       - AWS_DEFAULT_REGION=us-east-1
       - IMAGE_REPO_NAME=coworking-analytics
       - IMAGE_TAG=latest
